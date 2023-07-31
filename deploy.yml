@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: IMAGE_NAME
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 20%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      name: IMAGE_NAME
+  template:
+    metadata:
+      labels:
+        name: IMAGE_NAME
+    spec:
+      containers:
+      - name: IMAGE_NAME
+        image: FULL_NAME
+        ports:
+        - containerPort: POD_PORT
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: IMAGE_NAME
+  labels:
+    name: IMAGE_NAME
+spec:
+  type: LoadBalancer
+  ports:
+    - port: POD_PORT
+      nodePort: NODE_PORT
+      name: http
+  selector:
+    name: IMAGE_NAME
