@@ -1,6 +1,7 @@
 import express from 'express'
 import axios from 'axios'
 import cors from 'cors'
+require('dotenv').config()
 
 const apiToken = process.env.STRAPI_TOKEN
 const app = express()
@@ -10,19 +11,19 @@ app.use(express.urlencoded())
 
 app.get('/posts', (req, res) => {
   axios
-    .get('htpp://localhost:1337/api/posts?populate=*', {
+    .get('http://localhost:1337/api/posts?populate=*', {
       headers: {
         Authorization: `bearer ${apiToken}`
       }
     })
     .then(result => res.status(202).json(result.data))
-    .catch(err => res.status(err.response.status).json(err))
+    .catch(err => console.log(err))
 })
 
-app.get('/posts/:slug', (req, res) => {
+app.post('/posts', (req, res) => {
   axios
     .get(
-      `http://localhost:1337/api/posts?filters[slug][$eq]=${req.params.slug}`,
+      `http://localhost:1337/api/posts?populate=*&filters[slug][$eq]=${req.body.slug}`,
       {
         headers: {
           Authorization: `bearer ${apiToken}`
@@ -30,7 +31,21 @@ app.get('/posts/:slug', (req, res) => {
       }
     )
     .then(result => res.status(202).json(result.data))
-    .catch(err => res.status(err.response.status).json(err))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/highlights', (req, res) => {
+  axios
+    .get(
+      'http://localhost:1337/api/highlight?populate[post][populate][0]=thumb',
+      {
+        headers: {
+          Authorization: `bearer ${apiToken}`
+        }
+      }
+    )
+    .then(result => res.status(202).json(result.data))
+    .catch(err => console.log(err))
 })
 
 export default {

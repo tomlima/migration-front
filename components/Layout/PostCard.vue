@@ -1,30 +1,31 @@
 <template>
-  <NuxtLink :to="post.attributes.slug">
+  <NuxtLink
+    :to="
+      post.attributes.category.data.attributes.name + '/' + post.attributes.slug
+    "
+  >
     <article class="c-card">
       <div class="c-card__thumb">
-        <img
-          src="https://img.ibxk.com.br/2022/07/26/26195257102142.jpg?w=500&mode=crop&scale=both"
-          alt=""
-        />
+        <img :src="post.attributes.thumb.data.attributes.url" alt="" />
         <a href="#" class="c-card__category">
-          Ciência
+          {{ post.attributes.category.data.attributes.name }}
         </a>
       </div>
       <div class="c-card__infos l-flex">
         <div>
           <i class="bx bx-calendar"></i>
-          <span>20/07/2023</span>
-        </div>
-
-        <div>
-          <i class="bx bx-time"></i>
-          <span>4 minutos de leitura</span>
+          <span>{{ post.attributes.publishedAt }}</span>
+          <span
+            style="padding:10px 0;display:block;"
+            v-if="post.attributes.author.data"
+          >
+            <h4>{{ post.attributes.author.data.attributes.name }}</h4>
+          </span>
+          <hr />
         </div>
       </div>
-      <h2>{{ post.attributes.title }}</h2>
-      <p>
-        {{ post.attributes.call_text }}
-      </p>
+      <h2 v-html="post.attributes.title"></h2>
+      <p v-html="post.attributes.call_text"></p>
       <a class="c-card__readmore l-flex u-align-items-center" href="#"
         >Leia mais <i class="bx bx-chevron-right"></i
       ></a>

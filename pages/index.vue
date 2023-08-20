@@ -4,6 +4,7 @@
       <div class="toggle" @click="toggleMenuEvent()">
         <i id="toggle" class="bx bx-coffee-togo"></i>
       </div>
+      <Slider />
       <div class="wrapper">
         <h1>Últimas matérias</h1>
         <div class="posts">
